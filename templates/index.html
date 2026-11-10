@@ -1,0 +1,21 @@
+<!DOCTYPE html>
+<html lang="pt-br">
+<head>
+    <link rel="stylesheet" href="{{ url_for('static', filename='css/style.css') }}">
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Sistema Help Desk</title>
+</head>
+<body>
+    <div class="titulo">
+        <h1>Sistema Help Desk</h1>
+        <h3>Bem-vindo ao sistema!</h3>
+    </div>
+    <div class="subtitulo">
+        <h3>Funcionalidades</h3>
+        <p>Esse sistema permite ao usuário criar, visualizar e gerenciar chamados de suporte técnico. Você pode abrir novos chamados, acompanhar o status 
+        dos chamados existentes e receber atualizações sobre o progresso das solicitações de suporte.</p>
+        <a href="{{ url_for('login') }}" class="btn">Acessar o Sistema!</a>
+    </div>
+</body>
+</html>
