@@ -13,7 +13,8 @@
 }
 
 .titulo h1 {
-    font-size: 30px;
+    font-size: 28px;
+    margin-bottom: 25px;
 }
 
 .subtitulo {
@@ -41,3 +42,41 @@
 .btn:hover {
     background-color: rgb(6, 33, 153);
 }
+
+.login {
+    background-color: rgb(0, 162, 255);
+    color: rgb(255, 255, 255);
+    text-align: center;
+    margin: 20px;
+    padding: 20px;
+    border-radius: 10px;
+}
+
+.campo {
+     margin-bottom: 15px;
+}
+
+.campo input {
+    padding: 8px;
+    border-radius: 5px;
+    border: 1px solid gray;
+}
+
+.campo label {
+    display: block;
+    margin-bottom: 5px;
+}
+
+.btn-login {
+    background-color: rgb(0, 102, 255);
+    color: white;
+    padding: 10px 20px;
+    border: none;
+    border-radius: 8px;
+    cursor: pointer;
+}
+
+.btn-login:hover {
+    background-color: rgb(6, 33, 153);
+}
+

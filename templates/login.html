@@ -1,27 +1,30 @@
 <!DOCTYPE html>
 <html lang="pt-BR">
   <head>
+    <link rel="stylesheet" href="{{ url_for('static', filename='css/style.css') }}">
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <title>Login - Help Desk</title>
   </head>
   <body>
-    <main>
+    <main class="login">
       <h1>Acessar Sistema</h1>
       <form method="post" action="{{ url_for('login') }}">
-        <div>
+        <div class="campo">
           <label for="e-mail">E-mail: </label>
           <input type="email" id="e-mail" name="e-mail" required />
         </div>
-        <div>
+        <div class="campo">
           <label for="password">Senha: </label>
           <input type="password" id="password" name="password" required />
         </div>
-        <button type="submit">Entrar</button>
-        {% if message %}
-          <p> {{ message }} </p>
-        {% endif %}
+        <button type="submit" class="btn-login">Entrar</button>
       </form>
+      {% with messages = get_flashed_messages() %}
+        {% if messages %}
+            <p>{{ messages[0] }}</p>
+         {% endif %}
+        {% endwith %}
     </main>
   </body>
 </html>
