@@ -1,6 +1,6 @@
 from flask import Flask, render_template, request, redirect, url_for, flash
 from flask_sqlalchemy import SQLAlchemy
-from werkzeug.security import generate_password_hash
+from werkzeug.security import generate_password_hash, check_password_hash
 
 app = Flask(__name__)
 app.secret_key = 'uma-chave-secreta'
@@ -32,7 +32,16 @@ def login():
     if request.method == 'POST':
         email = request.form['e-mail']
         password = request.form['password']
-        flash ('Login efetuado com sucesso!')
+        usuario = Usuario.query.filter_by(email=email).first()
+        if usuario is None:
+            flash('E-mail não encontrado!')
+        else:
+            hash_verificacao = check_password_hash(usuario.senha, password)
+            if hash_verificacao is True:
+                flash ('Login efetuado com sucesso!')
+            else:
+                flash ('Senha inválida!')
+
         return redirect (url_for ('login'))
 
     return render_template('login.html')
@@ -40,7 +49,7 @@ def login():
 @app.route('/cadastro', methods=['GET', 'POST'])
 def cadastro():
     if request.method == 'POST':
-        nome=request.form['nome']
+        nome = request.form['nome']
         email = request.form['e-mail']
         password = request.form['password']
         senha_hash = generate_password_hash(password)
