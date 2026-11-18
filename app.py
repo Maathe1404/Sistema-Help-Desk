@@ -1,4 +1,4 @@
-from flask import Flask, render_template, request, redirect, url_for, flash
+from flask import Flask, render_template, request, redirect, url_for, flash, session
 from flask_sqlalchemy import SQLAlchemy
 from werkzeug.security import generate_password_hash, check_password_hash
 
@@ -39,12 +39,23 @@ def login():
             hash_verificacao = check_password_hash(usuario.senha, password)
             if hash_verificacao is True:
                 flash ('Login efetuado com sucesso!')
+                session['usuario_id'] = usuario.id
+                return redirect (url_for('painel'))
             else:
                 flash ('Senha inválida!')
 
         return redirect (url_for ('login'))
 
     return render_template('login.html')
+
+@app.route('/painel', methods=['GET'])
+def painel():
+    if 'usuario_id' not in session:
+        return redirect (url_for('login'))
+    else:
+        usuario_logado = Usuario.query.filter_by(id=session['usuario_id']).first()
+        return render_template ('painel.html', usuario=usuario_logado)
+
 
 @app.route('/cadastro', methods=['GET', 'POST'])
 def cadastro():
@@ -69,6 +80,11 @@ def cadastro():
             flash('Este e-mail já esta cadastrado!')
         
     return render_template('cadastro.html')
+
+@app.route('/logout', methods=['GET'])
+def logout():
+    session.clear()
+    return redirect (url_for('login'))
 
 with app.app_context():
     db.create_all()

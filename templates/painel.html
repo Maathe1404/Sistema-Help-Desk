@@ -1,0 +1,14 @@
+<!DOCTYPE html>
+<html lang="pt-br">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Painel</title>
+</head>
+<body>
+    <h1>Painel do Solicitante</h1>
+    <h1>Bem-vindo, {{ usuario.nome }}!</h1>
+    <p>Seu e-mail: {{ usuario.email }}</p>
+    <a href="{{ url_for('logout') }}">Sair da Conta</a>
+</body>
+</html>
