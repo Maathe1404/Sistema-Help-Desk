@@ -1,0 +1,15 @@
+<!DOCTYPE html>
+<html lang="pt-br">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Painel de Suporte</title>
+</head>
+<body>
+    <h1>Bem-vindo, {{ usuario.nome }}!</h1>
+    <p>Seu e-mail: {{ usuario.email }}</p>
+    {% for chamado in chamados %}
+    <p>{{chamado.titulo}} - {{chamado.prioridade}} - {{chamado.status}}</p>
+    {% endfor %}
+</body>
+</html>

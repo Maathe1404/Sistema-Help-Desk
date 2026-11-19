@@ -40,7 +40,10 @@ def login():
             if hash_verificacao is True:
                 flash ('Login efetuado com sucesso!')
                 session['usuario_id'] = usuario.id
-                return redirect (url_for('painel'))
+                if usuario.tipo == 'solicitante':
+                    return redirect (url_for('painel'))
+                else:
+                    return redirect (url_for('painel_suporte'))
             else:
                 flash ('Senha inválida!')
 
@@ -57,6 +60,16 @@ def painel():
         chamados = usuario_logado.chamados
         return render_template ('painel.html', usuario=usuario_logado, chamados=chamados)
 
+@app.route('/painel_suporte', methods=['GET'])
+def painel_suporte():
+    if 'usuario_id' not in session:
+        return redirect (url_for('login'))
+    else:
+        usuario_logado = Usuario.query.filter_by(id=session['usuario_id']).first()
+        if usuario_logado is None or usuario_logado.tipo != 'suporte':
+            return redirect(url_for('painel'))
+        chamados = Chamado.query.all()
+        return render_template ('painel_suporte.html', usuario=usuario_logado, chamados=chamados)
 
 @app.route('/cadastro', methods=['GET', 'POST'])
 def cadastro():
@@ -111,6 +124,24 @@ def novo_chamado():
 
 with app.app_context():
     db.create_all()
+
+    nome = 'Suporte 1'
+    email = 'suporte1@helpdesk.com'
+    senha = 'suporte123'
+    senha_hash = generate_password_hash(senha)
+    usuario = Usuario.query.filter_by(email=email).first()
+    if usuario is None:
+        novo_usuario = Usuario (
+            nome = nome,
+            email = email,
+            senha = senha_hash,
+            tipo = 'suporte',
+        )
+        db.session.add(novo_usuario)
+        db.session.commit()
+        print('Usuario de suporte criado com sucesso!')
+    else:
+        print('Usuário de suporte já cadastrado!')
 
 if __name__ == '__main__':
     app.run(debug=True)
