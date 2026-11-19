@@ -16,5 +16,9 @@
              <p>{{ mensagem }}</p>
         {% endfor %}
     {% endwith %}
+    <h2>Meus chamados</h2>
+    {% for chamado in chamados %}
+    <p>{{ chamado.titulo }} - {{ chamado.prioridade }} - {{ chamado.status }}</p>
+    {% endfor %}
 </body>
 </html>

@@ -54,7 +54,8 @@ def painel():
         return redirect (url_for('login'))
     else:
         usuario_logado = Usuario.query.filter_by(id=session['usuario_id']).first()
-        return render_template ('painel.html', usuario=usuario_logado)
+        chamados = usuario_logado.chamados
+        return render_template ('painel.html', usuario=usuario_logado, chamados=chamados)
 
 
 @app.route('/cadastro', methods=['GET', 'POST'])
