@@ -86,6 +86,28 @@ def logout():
     session.clear()
     return redirect (url_for('login'))
 
+@app.route('/novo_chamado', methods=['GET', 'POST'])
+def novo_chamado():
+    if 'usuario_id' not in session:
+        return redirect(url_for('login'))
+    
+    if request.method == 'POST':
+        titulo = request.form['titulo']
+        descricao = request.form ['descricao']
+        prioridade = request.form ['prioridade']
+        novo_chamado = Chamado (
+                    titulo = titulo,
+                    descricao = descricao,
+                    status = 'aberto',
+                    prioridade = prioridade,
+                    usuario_id = session['usuario_id']
+                )
+        db.session.add(novo_chamado)
+        db.session.commit()
+        flash('Chamado criado com sucesso!')
+        return redirect(url_for ('painel'))
+    return render_template ('novo_chamado.html')
+
 with app.app_context():
     db.create_all()
 
