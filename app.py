@@ -71,6 +71,29 @@ def painel_suporte():
         chamados = Chamado.query.all()
         return render_template ('painel_suporte.html', usuario=usuario_logado, chamados=chamados)
 
+@app.route ('/atualizar_status/<int:id>', methods=['POST'])
+def atualizar_status(id):
+    if 'usuario_id' not in session:
+        return redirect(url_for('login'))
+    else:
+        usuario_logado = Usuario.query.filter_by(id=session['usuario_id']).first()
+        if usuario_logado is None or usuario_logado.tipo != 'suporte':
+            return redirect(url_for('painel'))
+    chamado = Chamado.query.filter_by(id=id).first()
+    if chamado is None:
+        flash('Chamado não encontrado!')
+        return redirect(url_for('painel_suporte'))
+    novo_status = request.form['status']
+    if novo_status not in ['aberto', 'em andamento', 'resolvido']:
+        flash ('Status inválido!')
+        return redirect(url_for('painel_suporte'))
+    chamado.status = novo_status
+    db.session.commit()
+    flash('Status atualizado com sucesso!')
+    return redirect(url_for('painel_suporte'))
+
+
+
 @app.route('/cadastro', methods=['GET', 'POST'])
 def cadastro():
     if request.method == 'POST':

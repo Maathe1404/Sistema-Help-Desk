@@ -8,8 +8,16 @@
 <body>
     <h1>Bem-vindo, {{ usuario.nome }}!</h1>
     <p>Seu e-mail: {{ usuario.email }}</p>
-    {% for chamado in chamados %}
-    <p>{{chamado.titulo}} - {{chamado.prioridade}} - {{chamado.status}}</p>
-    {% endfor %}
+{% for chamado in chamados %}
+    <p>{{ chamado.titulo }} - {{ chamado.prioridade }} - {{ chamado.status }}</p>
+    <form action="{{ url_for('atualizar_status', id=chamado.id) }}" method="POST">
+        <select name="status">
+            <option value="aberto">Aberto</option>
+            <option value="em andamento">Em andamento</option>
+            <option value="resolvido">Resolvido</option>
+        </select>
+        <button type="submit">Atualizar status</button>
+    </form>
+{% endfor %}
 </body>
 </html>
