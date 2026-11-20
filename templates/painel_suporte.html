@@ -18,6 +18,9 @@
         </select>
         <button type="submit">Atualizar status</button>
     </form>
+    <form action="{{ url_for('excluir_chamado', id=chamado.id )}}" method="POST">
+        <button type="submit">Excluir chamado</button>
+    </form>
 {% endfor %}
 </body>
 </html>

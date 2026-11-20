@@ -92,7 +92,24 @@ def atualizar_status(id):
     flash('Status atualizado com sucesso!')
     return redirect(url_for('painel_suporte'))
 
+@app.route('/excluir_chamado/<int:id>', methods=['POST'])
+def excluir_chamado(id):
+    if 'usuario_id' not in session:
+        return redirect(url_for('login'))
+    else:
+        usuario = Usuario.query.filter_by(id=session['usuario_id']).first()
+        if usuario is None or usuario.tipo != 'suporte':
+            return redirect(url_for('painel'))
+    chamado = Chamado.query.filter_by(id=id).first()
+    if chamado is None:
+        flash('Chamado não encontrado!')
+        return redirect(url_for('painel_suporte'))
+    db.session.delete(chamado)
+    db.session.commit()
+    flash('Chamado excluído com sucesso')
+    return redirect(url_for('painel_suporte'))
 
+    
 
 @app.route('/cadastro', methods=['GET', 'POST'])
 def cadastro():
