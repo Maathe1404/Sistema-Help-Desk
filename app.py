@@ -114,11 +114,16 @@ def excluir_chamado(id):
 @app.route('/cadastro', methods=['GET', 'POST'])
 def cadastro():
     if request.method == 'POST':
-        nome = request.form['nome']
-        email = request.form['e-mail']
+        nome = request.form['nome'].strip()
+        email = request.form['e-mail'].strip()
         password = request.form['password']
+        if not nome or not email or not password:
+            flash('Preencha todos os campos!')
+            return redirect(url_for('cadastro'))
+        if '@' not in email or '.' not in email:
+            flash('Digite um e-mail válido!')
+            return redirect(url_for('cadastro'))
         senha_hash = generate_password_hash(password)
-       
         usuario_existente = Usuario.query.filter_by(email=email).first()
         if usuario_existente is None:
             novo_usuario = Usuario (
@@ -146,9 +151,15 @@ def novo_chamado():
         return redirect(url_for('login'))
     
     if request.method == 'POST':
-        titulo = request.form['titulo']
-        descricao = request.form ['descricao']
-        prioridade = request.form ['prioridade']
+        titulo = request.form['titulo'].strip()
+        descricao = request.form ['descricao'].strip()
+        prioridade = request.form ['prioridade'].strip()
+        if not titulo or not descricao or not prioridade:
+            flash('Preencha todos os campos!')
+            return redirect(url_for('novo_chamado'))
+        if prioridade not in ['baixa', 'media', 'alta']:
+            flash('Prioridade inválida!')
+            return redirect(url_for('novo_chamado'))
         novo_chamado = Chamado (
                     titulo = titulo,
                     descricao = descricao,

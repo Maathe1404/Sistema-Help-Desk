@@ -1,30 +1,38 @@
 <!DOCTYPE html>
 <html lang="pt-br">
+
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Novo Chamado</title>
 </head>
+
 <body>
     <h1>Abrir novo chamado</h1>
-    <form method="post" action="{{ url_for('novo_chamado') }}" >
+    <form method="post" action="{{ url_for('novo_chamado') }}">
         <div>
-        <label for="titulo">Título:</label>
-        <input type="text" id="titulo" name="titulo">
+            <label for="titulo">Título:</label>
+            <input type="text" id="titulo" name="titulo">
         </div>
         <div>
-        <label for="descricao">Descrição:</label>
-        <textarea name="descricao" id="descricao"></textarea>
+            <label for="descricao">Descrição:</label>
+            <textarea name="descricao" id="descricao"></textarea>
         </div>
         <div>
-        <label for="prioridade">Prioridade:</label>
-        <select name="prioridade" id="prioridade">
-            <option value="baixa">Baixa</option>
-            <option value="media">Média</option>
-            <option value="alta">Alta</option>
-        </select>
+            <label for="prioridade">Prioridade:</label>
+            <select name="prioridade" id="prioridade">
+                <option value="baixa">Baixa</option>
+                <option value="media">Média</option>
+                <option value="alta">Alta</option>
+            </select>
         </div>
         <button type="submit"> Enviar </button>
+        {% with mensagens = get_flashed_messages() %}
+            {% for mensagem in mensagens %}
+                <p class="mensagem">{{ mensagem }}</p>
+            {% endfor %}
+        {% endwith %}
     </form>
 </body>
+
 </html>
