@@ -1,24 +1,39 @@
 <!DOCTYPE html>
 <html lang="pt-br">
 <head>
+    <link rel="stylesheet" href="{{ url_for('static', filename='css/style.css') }}">
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Painel</title>
 </head>
 <body>
-    <h1>Painel do Solicitante</h1>
-    <h1>Bem-vindo, {{ usuario.nome }}!</h1>
-    <p>Seu e-mail: {{ usuario.email }}</p>
-    <a href="{{ url_for('logout') }}">Sair da Conta</a>
-    <a href="{{ url_for('novo_chamado')}}">Criar novo chamado</a>
-    {% with mensagens = get_flashed_messages() %}
-        {% for mensagem in mensagens %}
-             <p>{{ mensagem }}</p>
+    <header>
+        <h1>Painel do Solicitante</h1>
+        <h2>Bem-vindo, {{ usuario.nome }}!</h2>
+        <p>Seu e-mail: {{ usuario.email }}</p>
+    </header>
+    <main>
+    <section>
+        <a class="btn" href="{{ url_for('logout') }}">Sair da Conta</a>
+        <a class="btn" href="{{ url_for('novo_chamado')}}">Criar novo chamado</a>
+    </section>
+    <section>
+        {% with mensagens = get_flashed_messages() %}
+            {% for mensagem in mensagens %}
+                <p class="mensagem">{{ mensagem }}</p>
+            {% endfor %}
+        {% endwith %}
+    </section>
+    <section>
+        <h2 class="subtitulo">Meus chamados</h2>
+        {% for chamado in chamados %}
+            <div class="chamado">
+                <h3>{{ chamado.titulo }}</h3>
+                <p class="prioridade">Prioridade: {{ chamado.prioridade }}</p>
+                <p class="{% if chamado.status == 'aberto' %}aberto{% elif chamado.status == 'em andamento' %}andamento{% else %}resolvido{% endif %}">Status: {{ chamado.status }}</p>
+            </div>
         {% endfor %}
-    {% endwith %}
-    <h2>Meus chamados</h2>
-    {% for chamado in chamados %}
-    <p>{{ chamado.titulo }} - {{ chamado.prioridade }} - {{ chamado.status }}</p>
-    {% endfor %}
+    </section>
+    </main>
 </body>
 </html>

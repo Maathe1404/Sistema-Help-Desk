@@ -1,26 +1,36 @@
 <!DOCTYPE html>
 <html lang="pt-br">
 <head>
+    <link rel="stylesheet" href="{{ url_for('static', filename='css/style.css') }}">
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Painel de Suporte</title>
 </head>
 <body>
-    <h1>Bem-vindo, {{ usuario.nome }}!</h1>
-    <p>Seu e-mail: {{ usuario.email }}</p>
-{% for chamado in chamados %}
-    <p>{{ chamado.titulo }} - {{ chamado.prioridade }} - {{ chamado.status }}</p>
-    <form action="{{ url_for('atualizar_status', id=chamado.id) }}" method="POST">
-        <select name="status">
-            <option value="aberto">Aberto</option>
-            <option value="em andamento">Em andamento</option>
-            <option value="resolvido">Resolvido</option>
-        </select>
-        <button type="submit">Atualizar status</button>
-    </form>
-    <form action="{{ url_for('excluir_chamado', id=chamado.id )}}" method="POST">
-        <button type="submit">Excluir chamado</button>
-    </form>
-{% endfor %}
+    <header>
+        <h1>Painel de Suporte</h1>
+        <h2>Bem-vindo, {{ usuario.nome }}!</h2>
+        <p>Seu e-mail: {{ usuario.email }}</p>
+    </header>
+    <main>
+        {% for chamado in chamados %}
+        <div class="chamado">
+            <h3>{{ chamado.titulo }}</h3>
+            <p class="prioridade">Prioridade: {{ chamado.prioridade }}</p>
+            <p class="{% if chamado.status == 'aberto' %}aberto{% elif chamado.status == 'em andamento' %}andamento{% else %}resolvido{% endif %}">Status: {{ chamado.status }}</p>
+            <form action="{{ url_for('atualizar_status', id=chamado.id) }}" method="POST">
+                <select class="select-status" name="status">
+                    <option value="aberto">Aberto</option>
+                    <option value="em andamento">Em andamento</option>
+                    <option value="resolvido">Resolvido</option>
+                </select>
+                <button class="btn-atualizar" type="submit">Atualizar status</button>
+            </form>
+            <form action="{{ url_for('excluir_chamado', id=chamado.id )}}" method="POST">
+                <button class="btn-excluir" type="submit">Excluir chamado</button>
+            </form>
+        </div>
+        {% endfor %}
+    </main>
 </body>
 </html>
