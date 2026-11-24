@@ -32,9 +32,11 @@
                     </div>
                 </form>
             </div>
-            {% for mensagem in get_flashed_messages() %}
-                <p class="mensagem"> {{ mensagem }}</p>
-            {% endfor %}
+            {% with mensagens = get_flashed_messages() %}
+                {% for mensagem in mensagens %}
+                    <p class="mensagem"> {{ mensagem }}</p>
+                {% endfor %}
+            {% endwith %}
         </div>
     </div>
 </body>
