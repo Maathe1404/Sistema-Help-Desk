@@ -30,8 +30,11 @@ def homepage():
 @app.route('/login', methods=['GET', 'POST'])
 def login():
     if request.method == 'POST':
-        email = request.form['e-mail']
+        email = request.form['e-mail'].strip()
         password = request.form['password']
+        if not email or not password:
+            flash('Preencha todos os campos!')
+            return redirect(url_for('login'))
         usuario = Usuario.query.filter_by(email=email).first()
         if usuario is None:
             flash('E-mail não encontrado!')
@@ -57,6 +60,9 @@ def painel():
         return redirect (url_for('login'))
     else:
         usuario_logado = Usuario.query.filter_by(id=session['usuario_id']).first()
+        if usuario_logado is None:
+            session.clear()
+            return redirect(url_for('login'))
         chamados = usuario_logado.chamados
         return render_template ('painel.html', usuario=usuario_logado, chamados=chamados)
 
@@ -135,9 +141,14 @@ def cadastro():
             db.session.add(novo_usuario)
             db.session.commit()
             flash('Cadastro realizado com sucesso!')
+            return redirect(url_for('login'))
         else:
+            print('entrou no else email cadastrado')
             flash('Este e-mail já esta cadastrado!')
+            print(session.get('_flashes'))
+            return redirect(url_for('cadastro'))
         
+    print('MENSAGENS NA SESSÃO:', session.get('_flashes'))
     return render_template('cadastro.html')
 
 @app.route('/logout', methods=['GET'])
@@ -149,7 +160,10 @@ def logout():
 def novo_chamado():
     if 'usuario_id' not in session:
         return redirect(url_for('login'))
-    
+    usuario_logado = Usuario.query.filter_by(id=session['usuario_id']).first()
+    if usuario_logado is None:
+        session.clear()
+        return redirect(url_for('login'))
     if request.method == 'POST':
         titulo = request.form['titulo'].strip()
         descricao = request.form ['descricao'].strip()

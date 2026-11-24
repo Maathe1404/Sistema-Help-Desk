@@ -8,14 +8,19 @@
 </head>
 <body>
     <header>
-        <h1>Painel do Solicitante</h1>
-        <h2>Bem-vindo, {{ usuario.nome }}!</h2>
-        <p>Seu e-mail: {{ usuario.email }}</p>
+        <div>
+            <h1>Painel do Solicitante</h1>
+            <h2>Bem-vindo, {{ usuario.nome }}!</h2>
+            <p>Seu e-mail: {{ usuario.email }}</p>
+        </div>
+        <div class="logo-painel">
+            <img src="{{ url_for('static', filename='img/headset.svg') }}" alt="Logo Help Desk">
+        </div>
     </header>
     <main>
     <section>
-        <a class="btn" href="{{ url_for('logout') }}">Sair da Conta</a>
         <a class="btn" href="{{ url_for('novo_chamado')}}">Criar novo chamado</a>
+        <a class="btn" href="{{ url_for('logout') }}">Sair da Conta</a>
     </section>
     <section>
         {% with mensagens = get_flashed_messages() %}
@@ -30,6 +35,7 @@
             <div class="chamado">
                 <h3>{{ chamado.titulo }}</h3>
                 <p class="prioridade">Prioridade: {{ chamado.prioridade }}</p>
+                <p class="descricao">Descrição: {{ chamado.descricao }}</p>
                 <p class="{% if chamado.status == 'aberto' %}aberto{% elif chamado.status == 'em andamento' %}andamento{% else %}resolvido{% endif %}">Status: {{ chamado.status }}</p>
             </div>
         {% endfor %}
