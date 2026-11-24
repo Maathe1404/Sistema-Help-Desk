@@ -143,12 +143,9 @@ def cadastro():
             flash('Cadastro realizado com sucesso!')
             return redirect(url_for('login'))
         else:
-            print('entrou no else email cadastrado')
             flash('Este e-mail já esta cadastrado!')
-            print(session.get('_flashes'))
             return redirect(url_for('cadastro'))
         
-    print('MENSAGENS NA SESSÃO:', session.get('_flashes'))
     return render_template('cadastro.html')
 
 @app.route('/logout', methods=['GET'])
